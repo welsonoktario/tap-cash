@@ -1,23 +1,35 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Injectable, signal } from '@angular/core';
+import { APIResponse } from '@/types';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private router: Router) {}
+  readonly authUser = signal<any | null>(null);
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const random = Math.round(Math.random() * 10) / 10;
-    console.log(random);
-    if (random < 0.5) {
+  constructor(private httpClient: HttpClient) {}
+
+  loginDummy({ username, password }: { username: string; password: string }) {
+    this.authUser.set({ username });
+    localStorage.setItem('user', JSON.stringify({ username }));
+  }
+
+  login(loginPayload: { username: string; password: string }) {
+    return this.httpClient.post<APIResponse<any>>(
+      '/api/auth/login',
+      loginPayload
+    );
+  }
+
+  logout() {
+    try {
+      this.authUser.set(null);
+      localStorage.removeItem('user');
+
       return true;
+    } catch (error) {
+      return false;
     }
-
-    return this.router.navigate(['/login']);
   }
 }

@@ -103,7 +103,11 @@
       class="grid grid-cols-3 gap-x-16 gap-y-24 justify-center content-start mt-20"
     >
       <div *ngFor="let feature of features" class="text-center">
-        <img [src]="feature.icon" [alt]="feature.title" class="mx-auto max-h-16" />
+        <img
+          [src]="feature.icon"
+          [alt]="feature.title"
+          class="mx-auto max-h-16"
+        />
         <p class="mt-6 text-2xl font-bold text-primary">{{ feature.title }}</p>
         <p class="text-lg mt-2 text-black max-w-[26rem] mx-auto">
           {{ feature.description }}

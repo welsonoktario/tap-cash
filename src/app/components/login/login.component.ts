@@ -1,6 +1,8 @@
+import { AuthService } from '@/app/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -9,6 +11,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  isLoading = false;
+  isError = false;
+  errorMessage = '';
+
   loginForm = this.formBuilder.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -122,9 +128,37 @@ export class LoginComponent {
   ];
   currentYear = new Date().getFullYear();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {}
 
-  async handleSubmit() {
-    console.log(this.loginForm.value);
+  handleSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.loginDummy({
+        username: this.loginForm.value.username!,
+        password: this.loginForm.value.password!,
+      });
+      this.router.navigate(['/'], {
+        replaceUrl: true,
+      });
+
+      /* .subscribe({
+          next: (res) => {
+            if (!res.error) {
+              this.authService.authUser.set(res.data.user);
+              this.router.navigate(['/dashboard'], {
+                replaceUrl: true,
+              });
+            }
+          },
+          error: (err) => {
+            console.error(err);
+            this.isError = true;
+            this.errorMessage = err.message;
+          },
+        }); */
+    }
   }
 }
