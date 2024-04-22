@@ -1,0 +1,16 @@
+<div class="relative text-white font-mono font-medium select-none">
+  <img
+    class="pointer-events-none"
+    [src]="
+      cardType === 'tapcash'
+        ? '/assets/img/card-tapcash.png'
+        : '/assets/img/card-debit.png'
+    "
+    [alt]="cardType === 'tapcash' ? 'TapCash Card' : 'Debit Card'"
+  />
+
+  <ng-container *ngIf="cardType === 'tapcash'">
+    <p class="absolute left-4 top-14 tracking-wide">{{ cardNo }}</p>
+    <p class="absolute left-4 top-20 tracking-wide">{{ cardHolder }}</p>
+  </ng-container>
+</div>
