@@ -1,57 +1,23 @@
 <section
-  class="h-screen flex items-center justify-center text-white bg-[url(/assets/img/bg-bni.png)] bg-cover bg-[center_top_-14rem] bg-no-repeat"
+  class="relative flex h-screen items-center justify-center bg-[url(/assets/img/bg-bni.png)] bg-cover bg-center bg-no-repeat text-white"
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-32">
-    <form
-      [formGroup]="loginForm"
-      (ngSubmit)="handleSubmit()"
-      class="flex flex-col justify-between h-[28rem] w-[26rem] rounded-xl border-2 backdrop-blur-lg bg-transparent gap-y-8 px-8 py-12"
-    >
-      <h1 class="text-2xl font-semibold text-center">LOGIN</h1>
+  <app-header></app-header>
 
-      <div class="space-y-10">
-        <div>
-          <input
-            formControlName="username"
-            class="w-full"
-            type="text"
-            class="w-full bg-transparent border-b-2 text-white border-white focus:outline-none pb-2"
-            placeholder="User Name"
-            required
-          />
-        </div>
-        <div>
-          <input
-            formControlName="password"
-            type="password"
-            class="w-full bg-transparent border-b-2 text-white border-white focus:outline-none pb-2"
-            placeholder="Password"
-            required
-          />
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        class="mt-12 self-end bg-primary text-primary-foreground px-4 py-1 font-medium rounded-full w-40 text-left disabled:bg-neutral-400 disabled:text-neutral-700"
-        [disabled]="!loginForm.valid"
-      >
-        Login
-      </button>
-    </form>
-
+  <div class="container mx-auto flex w-full justify-between">
     <div class="flex flex-col justify-end">
       <img
-        src="/assets/img/logo-tapcash.png"
-        alt="TapCash"
-        class="w-4/5 mx-auto"
+        src="/assets/img/logo-bni-mobile-banking.png"
+        alt="BNI Mobile Banking"
+        class="w-fit"
       />
 
-      <p class="text-center text-2xl font-medium mt-10">
-        Download Virtual TapCash melalui<br />BNI Mobile Banking pada:
+      <p class="mt-4 max-w-[30rem] text-lg font-extralight tracking-wide">
+        Rasakan semua kelebihan dari Virtual Tapcash dengan mengunduh dan
+        menginstall BNI Mobile Banking
       </p>
 
-      <div class="flex justify-between w-full mt-2">
+      <p class="mt-6 text-xl">Tersedia di:</p>
+      <div class="mt-2 flex w-full gap-x-4">
         <a
           href="https://play.google.com/store/apps/details?id=id.co.bni.tapcashgo"
           norel="noreferrer"
@@ -74,33 +40,109 @@
         </a>
       </div>
     </div>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="handleSubmit()"
+      class="flex w-[26rem] flex-col justify-between gap-y-8 rounded-xl border-2 bg-transparent px-8 py-12 backdrop-blur-lg"
+    >
+      <div>
+        <h1 class="text-center text-4xl font-semibold">Log in</h1>
+        <p class="mt-3 text-sm font-thin">
+          Masukkan username dan Password BNI Mobile Banking untuk mengakses
+          Virtual TapCash Dasboard
+        </p>
+      </div>
+
+      <div class="space-y-10">
+        <div>
+          <input
+            formControlName="username"
+            class="w-full"
+            type="text"
+            class="w-full border-b-2 border-white bg-transparent pb-2 text-white focus:outline-none"
+            placeholder="Username"
+            required
+          />
+        </div>
+        <div class="relative">
+          <input
+            formControlName="password"
+            [type]="isPasswordVisible ? 'text' : 'password'"
+            class="w-full border-b-2 border-white bg-transparent pb-2 text-white focus:outline-none"
+            placeholder="Password"
+            required
+          />
+          <div
+            (click)="isPasswordVisible = !isPasswordVisible"
+            class="absolute inset-y-0 right-4 cursor-pointer transition-colors hover:text-white"
+            [ngClass]="{
+              'text-white': isPasswordVisible,
+              'text-neutral-400': !isPasswordVisible
+            }"
+          >
+            <svg
+              width="20"
+              height="18"
+              viewBox="0 0 20 18"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3.76722 3.9455L1.16155 1.33983L2.34006 0.161316L18.8392 16.6604L17.6607 17.839L14.9024 15.0807C13.4847 15.9796 11.8033 16.5002 10.0004 16.5002C5.50693 16.5002 1.76862 13.267 0.984863 9.00019C1.34876 7.01904 2.3496 5.26077 3.76722 3.9455ZM12.2982 12.4765L11.0782 11.2565C10.7518 11.4127 10.3863 11.5002 10.0004 11.5002C8.61966 11.5002 7.50038 10.3809 7.50038 9.00019C7.50038 8.61419 7.58785 8.24869 7.74402 7.92227L6.52405 6.70233C6.08778 7.36102 5.83371 8.15094 5.83371 9.00019C5.83371 11.3014 7.6992 13.1669 10.0004 13.1669C10.8496 13.1669 11.6395 12.9128 12.2982 12.4765ZM6.64555 2.13348C7.68455 1.72468 8.81625 1.50016 10.0004 1.50016C14.4938 1.50016 18.2322 4.73329 19.0159 9.00019C18.7557 10.4165 18.17 11.719 17.3392 12.8271L14.1227 9.61061C14.1519 9.41136 14.1671 9.20752 14.1671 9.00019C14.1671 6.69897 12.3016 4.83349 10.0004 4.83349C9.793 4.83349 9.58916 4.84863 9.38991 4.87788L6.64555 2.13348Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full self-end rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground disabled:bg-neutral-400 disabled:text-neutral-700"
+        [disabled]="!loginForm.valid"
+      >
+        Login
+      </button>
+    </form>
   </div>
 </section>
 
-<section class="text-center py-20">
-  <h1 class="uppercase text-primary text-5xl font-bold">
-    Apa itu Virtual TapCash?
-  </h1>
-  <h2 class="text-primary mt-3 text-2xl font-semibold">
-    Virtual TapCash merupakan solusi pembayaran yang lancar, aman, dan ramah
-    pengguna.
-  </h2>
+<section
+  class="container mx-auto grid grid-cols-2 items-center justify-between"
+>
+  <div>
+    <p class="font-secondary text-xl tracking-wider text-primary">
+      Virtual TapCash
+    </p>
+    <h1 class="mt-8 text-5xl font-medium">
+      Pembayaran lancar, aman,<br />
+      dan ramah pengguna.
+    </h1>
 
-  <p class="mt-10 text-lg">
-    Virtual TapCash merupakan sebuah aplikasi mobile yang dapat menjadi
-    alternatif bagi pengguna untuk <br />
-    mengelola keuangannya yang telah terintegrasi dengan kartu uang elektronik.
-  </p>
+    <p class="mt-10 text-lg">
+      Virtual TapCash merupakan sebuah aplikasi mobile yang dapat menjadi
+      alternatif bagi <br />
+      pengguna untuk mengelola keuangannya yang telah terintegrasi dengan kartu
+      uang <br />
+      elektronik.
+    </p>
+  </div>
+
+  <img
+    src="/assets/img/home-illustration-1.png"
+    alt="TapCash App"
+    class="aspect-square h-auto w-[30rem] justify-self-end"
+  />
 </section>
 
-<section class="py-20 bg-primary/30">
+<section class="bg-secondary py-24">
   <div class="container mx-auto">
-    <h1 class="text-primary text-4xl font-bold text-center">
+    <h1 class="text-center text-4xl tracking-wider text-primary-foreground">
       Fitur Pada Virtual TapCash
     </h1>
 
     <div
-      class="grid grid-cols-3 gap-x-16 gap-y-24 justify-center content-start mt-20"
+      class="mt-20 grid grid-cols-3 content-start justify-center gap-x-16 gap-y-24"
     >
       <div *ngFor="let feature of features" class="text-center">
         <img
@@ -108,10 +150,15 @@
           [alt]="feature.title"
           class="mx-auto max-h-16"
         />
-        <p class="mt-6 text-2xl font-bold text-primary">{{ feature.title }}</p>
-        <p class="text-lg mt-2 text-black max-w-[26rem] mx-auto">
-          {{ feature.description }}
+        <p
+          class="mt-6 text-3xl font-medium tracking-wide text-primary-foreground"
+        >
+          {{ feature.title }}
         </p>
+        <p
+          class="mx-auto mt-2 text-lg font-thin tracking-wide text-primary-foreground"
+          [innerHTML]="feature.description"
+        ></p>
       </div>
     </div>
   </div>
@@ -119,7 +166,7 @@
 
 <section class="py-10">
   <div class="container mx-auto">
-    <div class="grid grid-cols-3 justify-start w-fit gap-x-32 font-medium">
+    <div class="grid w-fit grid-cols-3 justify-start gap-x-32 font-medium">
       <div class="flex flex-col">
         <img src="/assets/img/logo-bni.png" alt="Bank BNI" class="h-10 w-fit" />
         <p class="mt-1">PT Bank Negara Indonesia (Persero) Tbk.</p>
@@ -132,7 +179,7 @@
 
         <p class="mt-4 text-neutral-600">Telefon: +62-21-2511946</p>
 
-        <div class="mt-6 flex gap-x-4 items-center">
+        <div class="mt-6 flex items-center gap-x-4">
           <a
             *ngFor="let link of socialLinks"
             [href]="link.link"
@@ -147,7 +194,7 @@
       <div class="flex flex-col">
         <p class="font-medium">Informasi Perusahaan</p>
 
-        <ul class="list-inside mt-4 space-y-3">
+        <ul class="mt-4 list-inside space-y-3">
           <li *ngFor="let link of informationLinks" class="text-neutral-600">
             <a [href]="link.href" norel="noreferrer">{{ link.label }}</a>
           </li>
@@ -157,7 +204,7 @@
       <div class="flex flex-col">
         <p class="font-medium">Bantuan dan Dukungan</p>
 
-        <ul class="list-inside mt-4 space-y-3">
+        <ul class="mt-4 list-inside space-y-3">
           <li *ngFor="let link of supportLinks" class="text-neutral-600">
             <a [href]="link.href" norel="noreferrer">{{ link.label }}</a>
           </li>
@@ -167,24 +214,4 @@
   </div>
 </section>
 
-<section class="py-8 bg-primary/30">
-  <div class="container mx-auto">
-    <div class="flex justify-between items-center">
-      <div class="flex gap-x-4 items-center">
-        <img src="/assets/img/logo-ojk.png" alt="OJK" class="h-10" />
-        <img src="/assets/img/logo-lps.png" alt="LPS" class="h-10" />
-
-        <div class="text-neutral-600">
-          BNI diawasi dan diatur oleh Otoritas Jasa Keuangan dan Bank Indonesia.
-          <br />
-          BNI merupakan peserta penjaminan Lembaga Penjamin Pinjaman.
-        </div>
-      </div>
-
-      <p class="text-black">
-        &copy; Hak Cipta {{ currentYear }} PT Bank Negara Indonesia (Persero),
-        Tbk.
-      </p>
-    </div>
-  </div>
-</section>
+<app-footer></app-footer>

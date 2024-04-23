@@ -1,25 +1,30 @@
-<table class="w-full table table-auto">
+<table class="table w-full table-auto">
   <thead>
-    <tr class="bg-primary/30 text-black font-bold text-center">
-      <th class="py-2 pl-12 pr-4 text-left">Waktu Transaksi</th>
-      <th class="py-2 px-4 text-center">Jenis Transaksi</th>
-      <th class="py-2 pl-4 pr-12 text-right">Nominal Transaksi</th>
+    <tr class="bg-secondary/10 text-center font-bold text-black">
+      <th class="rounded-l-md py-2 pl-12 pr-4 text-left">Waktu Transaksi</th>
+      <th class="px-4 py-2 text-center">Jenis Transaksi</th>
+      <th class="rounded-r-md py-2 pl-4 pr-12 text-right">Nominal Transaksi</th>
     </tr>
-    <tr class="h-4"></tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let transaction of transactions; last as isLast">
-      <tr class="bg-primary/10">
-        <td class="py-2 pl-12 pr-4 text-left">{{ transaction.date }}</td>
-        <td class="py-2 px-4 text-center">{{ transaction.type }}</td>
+    <ng-container *ngFor="let transaction of transactions">
+      <tr class="border-b last:border-none">
+        <td class="py-2 pl-12 pr-4 text-left">
+          {{ transaction.date | date: "hh:mm d/MM/y" : "id" }}
+        </td>
+        <td class="px-4 py-2 text-center">{{ transaction.type }}</td>
         <td class="py-2 pl-4 pr-12 text-right">
-          <span>
+          <span
+            [ngClass]="{
+              'text-secondary': transaction.type === 'Masuk',
+              'text-primary': transaction.type === 'Keluar'
+            }"
+          >
             {{ transaction.type === "Masuk" ? "+" : "-" }}
-            {{ transaction.amount | currency : "IDR" : "symbol" : "1.0-0" }}
+            {{ transaction.amount | currency: "IDR" : "symbol" : "1.0-0" }}
           </span>
         </td>
       </tr>
-      <tr *ngIf="!isLast" class="h-2"></tr>
     </ng-container>
   </tbody>
 </table>

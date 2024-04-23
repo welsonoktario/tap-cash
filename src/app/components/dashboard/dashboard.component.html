@@ -1,22 +1,10 @@
-<div class="max-w-7xl mx-auto py-4 md:py-8 text-lg">
-  <div class="flex flex-row-reverse">
-    <a (click)="handleLogout()" role="button" class="uppercase text-red-500 font-semibold text-lg">Log Out</a>
-  </div>
+<app-header></app-header>
 
-  <div
-    class="flex justify-between items-center text-lg bg-gradient-to-r from-transparent via-primary/30 to-transparent py-3 px-2 mt-4"
-  >
-    <p>
-      Halo, <span class="font-bold">{{ authUser?.username }}</span>
-    </p>
-
-    <p>{{ dateTimeNow }}</p>
-  </div>
-
+<div class="mx-auto mt-32 max-w-6xl px-4 pb-4 text-lg md:px-8 md:pb-8">
   <ng-container *ngIf="isTapcashEnabled; else tapcashDisabled">
-    <div class="flex justify-between mt-6">
-      <div class="font-semibold">
-        <p>TapCash Account</p>
+    <div class="mt-6 flex flex-col md:flex-row md:justify-between">
+      <div>
+        <p class="font-semibold">Kartu TapCash</p>
         <div class="mt-3">
           <card
             cardType="tapcash"
@@ -24,13 +12,28 @@
             cardNo="12345678901234567890"
           ></card>
         </div>
-        <p class="text-center mt-3">
-          Saldo: <span class="ml-2">Rp 240.000</span>
-        </p>
+        <div class="mt-4 space-y-3">
+          <div>
+            <p class="text-sm text-neutral-600">Nomor Kartu</p>
+            <p class="text-xl font-medium">1234 5678 9011 1213</p>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-neutral-600">Nama Kartu</p>
+              <p class="text-xl font-medium">My TapCash 1</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-600">Saldo</p>
+              <p class="text-xl font-medium">
+                {{ 250000 | currency: "IDR" : "symbol" : "1.0-0" }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="font-semibold">
-        <p>Saving Account</p>
+      <div>
+        <p class="font-semibold">Kartu Debit</p>
         <div class="mt-3">
           <card
             cardType="debit"
@@ -38,45 +41,111 @@
             cardNo="12345678901234567890"
           ></card>
         </div>
-        <p class="text-center mt-3">
-          Saldo: <span class="ml-2">Rp 240.000</span>
-        </p>
+        <div class="mt-4 space-y-3">
+          <div>
+            <p class="text-sm text-neutral-600">Nomor Kartu</p>
+            <p class="flex items-center gap-x-4 text-xl font-medium">
+              {{
+                isDebitNumberVisible
+                  ? "1234 5678 9011 1213"
+                  : "**** **** **** ****"
+              }}
+              <span
+                (click)="isDebitNumberVisible = !isDebitNumberVisible"
+                class="text-secondary"
+              >
+                <svg
+                  *ngIf="isDebitNumberVisible"
+                  width="20"
+                  height="18"
+                  viewBox="0 0 20 18"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.76722 3.9455L1.16155 1.33983L2.34006 0.161316L18.8392 16.6604L17.6607 17.839L14.9024 15.0807C13.4847 15.9796 11.8033 16.5002 10.0004 16.5002C5.50693 16.5002 1.76862 13.267 0.984863 9.00019C1.34876 7.01904 2.3496 5.26077 3.76722 3.9455ZM12.2982 12.4765L11.0782 11.2565C10.7518 11.4127 10.3863 11.5002 10.0004 11.5002C8.61966 11.5002 7.50038 10.3809 7.50038 9.00019C7.50038 8.61419 7.58785 8.24869 7.74402 7.92227L6.52405 6.70233C6.08778 7.36102 5.83371 8.15094 5.83371 9.00019C5.83371 11.3014 7.6992 13.1669 10.0004 13.1669C10.8496 13.1669 11.6395 12.9128 12.2982 12.4765ZM6.64555 2.13348C7.68455 1.72468 8.81625 1.50016 10.0004 1.50016C14.4938 1.50016 18.2322 4.73329 19.0159 9.00019C18.7557 10.4165 18.17 11.719 17.3392 12.8271L14.1227 9.61061C14.1519 9.41136 14.1671 9.20752 14.1671 9.00019C14.1671 6.69897 12.3016 4.83349 10.0004 4.83349C9.793 4.83349 9.58916 4.84863 9.38991 4.87788L6.64555 2.13348Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                <svg
+                  *ngIf="!isDebitNumberVisible"
+                  class="-ml-1 scale-75"
+                  width="26"
+                  height="22"
+                  viewBox="0 0 26 22"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.378662 10.6863C1.47592 4.71267 6.70956 0.186279 13.0004 0.186279C19.2912 0.186279 24.5249 4.71267 25.6221 10.6863C24.5249 16.6598 19.2912 21.1863 13.0004 21.1863C6.70956 21.1863 1.47592 16.6598 0.378662 10.6863ZM13.0004 16.5196C16.2221 16.5196 18.8338 13.9079 18.8338 10.6863C18.8338 7.46462 16.2221 4.85295 13.0004 4.85295C9.77873 4.85295 7.16705 7.46462 7.16705 10.6863C7.16705 13.9079 9.77873 16.5196 13.0004 16.5196ZM13.0004 14.1863C11.0674 14.1863 9.50039 12.6193 9.50039 10.6863C9.50039 8.75323 11.0674 7.18628 13.0004 7.18628C14.9334 7.18628 16.5004 8.75323 16.5004 10.6863C16.5004 12.6193 14.9334 14.1863 13.0004 14.1863Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </p>
+          </div>
+          <div>
+            <p class="text-sm text-neutral-600">Saldo</p>
+            <p class="flex items-center gap-x-4 text-xl font-medium">
+              {{
+                isDebitBalanceVisible
+                  ? (5000000 | currency: "IDR" : "symbol" : "1.0-0")
+                  : "*********"
+              }}
+
+              <span
+                (click)="isDebitBalanceVisible = !isDebitBalanceVisible"
+                class="text-secondary"
+              >
+                <svg
+                  *ngIf="isDebitBalanceVisible"
+                  width="20"
+                  height="18"
+                  viewBox="0 0 20 18"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3.76722 3.9455L1.16155 1.33983L2.34006 0.161316L18.8392 16.6604L17.6607 17.839L14.9024 15.0807C13.4847 15.9796 11.8033 16.5002 10.0004 16.5002C5.50693 16.5002 1.76862 13.267 0.984863 9.00019C1.34876 7.01904 2.3496 5.26077 3.76722 3.9455ZM12.2982 12.4765L11.0782 11.2565C10.7518 11.4127 10.3863 11.5002 10.0004 11.5002C8.61966 11.5002 7.50038 10.3809 7.50038 9.00019C7.50038 8.61419 7.58785 8.24869 7.74402 7.92227L6.52405 6.70233C6.08778 7.36102 5.83371 8.15094 5.83371 9.00019C5.83371 11.3014 7.6992 13.1669 10.0004 13.1669C10.8496 13.1669 11.6395 12.9128 12.2982 12.4765ZM6.64555 2.13348C7.68455 1.72468 8.81625 1.50016 10.0004 1.50016C14.4938 1.50016 18.2322 4.73329 19.0159 9.00019C18.7557 10.4165 18.17 11.719 17.3392 12.8271L14.1227 9.61061C14.1519 9.41136 14.1671 9.20752 14.1671 9.00019C14.1671 6.69897 12.3016 4.83349 10.0004 4.83349C9.793 4.83349 9.58916 4.84863 9.38991 4.87788L6.64555 2.13348Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                <svg
+                  *ngIf="!isDebitBalanceVisible"
+                  class="-ml-1 scale-75"
+                  width="26"
+                  height="22"
+                  viewBox="0 0 26 22"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.378662 10.6863C1.47592 4.71267 6.70956 0.186279 13.0004 0.186279C19.2912 0.186279 24.5249 4.71267 25.6221 10.6863C24.5249 16.6598 19.2912 21.1863 13.0004 21.1863C6.70956 21.1863 1.47592 16.6598 0.378662 10.6863ZM13.0004 16.5196C16.2221 16.5196 18.8338 13.9079 18.8338 10.6863C18.8338 7.46462 16.2221 4.85295 13.0004 4.85295C9.77873 4.85295 7.16705 7.46462 7.16705 10.6863C7.16705 13.9079 9.77873 16.5196 13.0004 16.5196ZM13.0004 14.1863C11.0674 14.1863 9.50039 12.6193 9.50039 10.6863C9.50039 8.75323 11.0674 7.18628 13.0004 7.18628C14.9334 7.18628 16.5004 8.75323 16.5004 10.6863C16.5004 12.6193 14.9334 14.1863 13.0004 14.1863Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="mt-6">
-      <h1 class="uppercase text-2xl font-bold text-center">
-        Riwayat Transaksi
-      </h1>
+    <div class="mt-12">
+      <h1 class="text-2xl font-bold">Riwayat Transaksi</h1>
       <div class="mt-6">
-        <table-transaction
-          [transactions]="[
-            {
-              date: '2023-01-01',
-              type: 'Masuk',
-              amount: 100000,
-            },
-            {
-              date: '2023-01-02',
-              type: 'Keluar',
-              amount: 100000,
-            },
-            {
-              date: '2023-01-03',
-              type: 'Masuk',
-              amount: 100000,
-            },
-          ]"
-        ></table-transaction>
+        <table-transaction [transactions]="transactions"></table-transaction>
       </div>
     </div>
   </ng-container>
 
   <ng-template #tapcashDisabled>
     <div
-      class="mt-8 h-96 rounded-lg bg-primary/10 p-8 flex flex-col justify-center items-center"
+      class="mt-8 flex h-96 flex-col items-center justify-center rounded-lg bg-primary/10 p-8"
     >
-      <h1 class="uppercase text-2xl font-bold text-center">
+      <h1 class="text-center text-2xl font-bold uppercase">
         TapCash Belum Aktif
       </h1>
       <div class="mt-6">
@@ -88,3 +157,5 @@
     </div>
   </ng-template>
 </div>
+
+<app-footer2></app-footer2>

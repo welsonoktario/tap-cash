@@ -6,11 +6,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#DB5F19",
+        primary: "#EF5A22",
         "primary-foreground": "#FFFFFF",
+        secondary: "#0B434D",
+        "secondary-foreground": "#FFFFFF",
       },
       fontFamily: {
-        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
+        sans: ["Overpass", ...defaultTheme.fontFamily.sans],
+        secondary: ["PT Sans", ...defaultTheme.fontFamily.sans],
       },
     },
   },

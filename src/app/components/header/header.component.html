@@ -1,0 +1,23 @@
+<div class="absolute inset-x-0 top-0 bg-white px-4 py-4 shadow md:px-0">
+  <div class="container mx-auto flex items-center justify-between">
+    <div class="h-4 w-auto md:h-8">
+      <img
+        src="/assets/img/logo-tapcash.png"
+        alt="TapCash"
+        class="object-contain"
+      />
+    </div>
+
+    <div *ngIf="username" class="flex items-center gap-x-4">
+      <div class="flex h-full items-center border-r-2 pr-4">
+        {{ username }}
+      </div>
+      <button
+        (click)="logout()"
+        class="rounded-lg border-2 border-primary px-3 py-1 font-medium text-primary"
+      >
+        Log out
+      </button>
+    </div>
+  </div>
+</div>
