@@ -1,3 +1,4 @@
+import { AccountService } from "@/app/services/account.service";
 import { AuthService } from "@/app/services/auth.service";
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
@@ -10,11 +11,13 @@ import { Router } from "@angular/router";
   imports: [CommonModule],
 })
 export class HeaderComponent {
-  username = this.authService.authUser()?.username;
+  authUser = this.authService.authUser();
+  account = this.accountService.account();
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private accountService: AccountService
   ) {}
 
   logout() {

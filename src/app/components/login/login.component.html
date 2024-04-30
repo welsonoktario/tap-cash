@@ -1,9 +1,11 @@
 <section
-  class="relative flex h-screen items-center justify-center bg-[url(/assets/img/bg-bni.png)] bg-cover bg-center bg-no-repeat text-white"
+  class="relative flex h-screen items-center justify-center bg-[url(/assets/img/bg-bni.png)] bg-cover bg-center bg-no-repeat px-4 text-white md:px-0"
 >
   <app-header></app-header>
 
-  <div class="container mx-auto flex w-full justify-between">
+  <div
+    class="mx-auto mt-12 flex w-full max-w-6xl flex-col-reverse justify-between gap-y-16 md:mt-0 md:flex-row"
+  >
     <div class="flex flex-col justify-end">
       <img
         src="/assets/img/logo-bni-mobile-banking.png"
@@ -44,7 +46,7 @@
     <form
       [formGroup]="loginForm"
       (ngSubmit)="handleSubmit()"
-      class="flex w-[26rem] flex-col justify-between gap-y-8 rounded-xl border-2 bg-transparent px-8 py-12 backdrop-blur-lg"
+      class="flex flex-col justify-between gap-y-8 rounded-xl border-2 bg-transparent px-8 py-12 backdrop-blur-lg md:w-[26rem]"
     >
       <div>
         <h1 class="text-center text-4xl font-semibold">Log in</h1>
@@ -165,7 +167,7 @@
 </section>
 
 <section class="py-10">
-  <div class="container mx-auto">
+  <div class="container mx-auto px-4 md:px-0">
     <div class="grid w-fit grid-cols-3 justify-start gap-x-32 font-medium">
       <div class="flex flex-col">
         <img src="/assets/img/logo-bni.png" alt="Bank BNI" class="h-10 w-fit" />

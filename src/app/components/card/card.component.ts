@@ -1,20 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { Component, Input } from "@angular/core";
 
 @Component({
-  selector: 'card',
+  selector: "card",
   standalone: true,
-  templateUrl: './card.component.html',
+  templateUrl: "./card.component.html",
   imports: [CommonModule],
 })
 export class CardComponent {
-  @Input() cardType!: 'tapcash' | 'debit';
-  @Input() cardHolder!: string;
+  @Input() cardType!: "tapcash" | "debit";
+  @Input() cardName!: string;
   @Input() cardNo!: string;
 
   constructor() {}
 
   ngOnInit() {
-    this.cardNo = this.cardNo.match(/.{1,4}/g)!.join(' ');
+    this.cardNo = this.cardNo.match(/.{1,4}/g)!.join(" ");
   }
 }

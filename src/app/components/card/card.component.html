@@ -1,6 +1,6 @@
 <div class="relative select-none font-mono font-medium text-white">
   <img
-    class="pointer-events-none w-96 h-full"
+    class="pointer-events-none h-full w-96"
     [src]="
       cardType === 'tapcash'
         ? '/assets/img/card-tapcash.png'
@@ -9,8 +9,15 @@
     [alt]="cardType === 'tapcash' ? 'TapCash Card' : 'Debit Card'"
   />
 
-  <p class="absolute bottom-10 left-4 text-sm uppercase tracking-widest">
-    {{ cardHolder }}
+  <p
+    class="absolute bottom-20 left-4 font-secondary text-xl font-light uppercase"
+  >
+    {{ cardName }}
+  </p>
+  <p
+    class="absolute bottom-10 left-4 font-secondary text-sm uppercase tracking-widest"
+  >
+    {{ cardType === "tapcash" ? "Card Number" : "Nomor Rekening" }}
   </p>
   <p class="absolute bottom-4 left-4 font-secondary text-xl font-light">
     {{ cardNo }}

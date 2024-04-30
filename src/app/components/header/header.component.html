@@ -1,4 +1,4 @@
-<div class="absolute inset-x-0 top-0 bg-white px-4 py-4 shadow md:px-0">
+<div class="absolute inset-x-0 top-0 z-50 bg-white px-4 py-4 shadow lg:px-0">
   <div class="container mx-auto flex items-center justify-between">
     <div class="h-4 w-auto md:h-8">
       <img
@@ -8,9 +8,9 @@
       />
     </div>
 
-    <div *ngIf="username" class="flex items-center gap-x-4">
+    <div *ngIf="account?.customerName" class="flex items-center gap-x-4">
       <div class="flex h-full items-center border-r-2 pr-4">
-        {{ username }}
+        {{ account?.customerName }}
       </div>
       <button
         (click)="logout()"

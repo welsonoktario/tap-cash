@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { APIResponse } from '@/types';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -16,7 +15,7 @@ export class AuthService {
   }
 
   login(loginPayload: { username: string; password: string }) {
-    return this.httpClient.post<APIResponse<any>>(
+    return this.httpClient.post<any>(
       '/api/auth/login',
       loginPayload
     );
