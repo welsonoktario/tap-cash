@@ -105,16 +105,21 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.accountService
-      .getUserData()
-      .then((data) => {
+    this.accountService.getUserData(this.authService.token()!).subscribe({
+      next: (data) => {
+        console.log(data);
         this.accountService.account.set(data);
-      })
-      .catch((error: any) => {
+      },
+      error: (err) => {
         this.isError = true;
-        this.errorMessage = error.message;
-      })
-      .finally(() => (this.isLoading = false));
+        this.errorMessage = err.message;
+        this.isLoading = false;
+        console.error(err);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 
   async handleLogout() {

@@ -1,4 +1,7 @@
+const baseUrl = "https://4e37-110-137-192-136.ngrok-free.app" as const;
+
 export const environment = {
   production: true,
-  apiUrl: "https://4ff3-103-166-137-242.ngrok-free.app/api/v1",
+  baseUrl,
+  apiUrl: baseUrl + "/api/v1",
 };

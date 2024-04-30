@@ -31,7 +31,7 @@ export class LoginComponent {
 
   loginForm = this.formBuilder.group({
     username: ["", Validators.required],
-    password: ["", Validators.required],
+    pin: ["", Validators.required],
   });
   features = [
     {
@@ -79,29 +79,28 @@ export class LoginComponent {
 
   handleSubmit() {
     if (this.loginForm.valid) {
-      this.authService.loginDummy({
-        username: this.loginForm.value.username!,
-        password: this.loginForm.value.password!,
-      });
-      this.router.navigate(["/"], {
-        replaceUrl: true,
-      });
-
-      /* .subscribe({
+      this.authService
+        .login({
+          username: this.loginForm.value.username!,
+          pin: this.loginForm.value.pin!,
+        })
+        .subscribe({
           next: (res) => {
-            if (!res.error) {
-              this.authService.authUser.set(res.data.user);
-              this.router.navigate(['/dashboard'], {
-                replaceUrl: true,
-              });
-            }
+            localStorage.setItem("token", res);
+            this.router.navigate(["/"], {
+              replaceUrl: true,
+            });
           },
           error: (err) => {
             console.error(err);
             this.isError = true;
             this.errorMessage = err.message;
           },
-        }); */
+        });
+
+      this.router.navigate(["/"], {
+        replaceUrl: true,
+      });
     }
   }
 }
