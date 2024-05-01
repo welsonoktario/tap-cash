@@ -1,0 +1,24 @@
+<div class="mt-12">
+  <h1 class="text-2xl font-bold">Riwayat Transaksi</h1>
+  <div class="mt-6">
+    <ng-container *ngIf="isLoading; else contentTemplate">
+      <div class="mt-20 flex h-full items-center justify-center">
+        Memuat data transaksi...
+      </div>
+    </ng-container>
+
+    <ng-template #contentTemplate>
+      <ng-container *ngIf="isError; else accountTemplate">
+        <div class="mt-20 flex h-full items-center justify-center">
+          Terjadi kesalahan memuat data transaksi: {{ errorMessage }}
+        </div>
+      </ng-container>
+
+      <ng-template #accountTemplate>
+        <div class="h-96 overflow-y-auto">
+          <table-transaction [transactions]="transactions"></table-transaction>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

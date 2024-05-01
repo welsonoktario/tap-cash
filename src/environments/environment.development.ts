@@ -1,4 +1,4 @@
-const baseUrl = "https://4e37-110-137-192-136.ngrok-free.app" as const;
+const baseUrl = "https://a190-36-78-10-144.ngrok-free.app" as const;
 
 export const environment = {
   production: false,

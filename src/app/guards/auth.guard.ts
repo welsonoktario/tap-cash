@@ -7,11 +7,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const isLoginRoute = route.url[0]?.path === "login";
 
-  const hasToken = authService.token() || !!localStorage.getItem("token");
+  const hasToken = authService.token || !!localStorage.getItem("token");
 
   if (isLoginRoute) {
     if (hasToken) {
-      authService.token.set(localStorage.getItem("token")!);
+      authService.setToken(localStorage.getItem("token")!);
 
       return router.navigate(["/"], { replaceUrl: true });
     }
@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   if (hasToken) {
-    authService.token.set(localStorage.getItem("token")!);
+    authService.setToken(localStorage.getItem("token")!);
 
     return true;
   }

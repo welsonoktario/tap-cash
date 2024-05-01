@@ -1,38 +1,49 @@
-import { Injectable, signal } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { environment } from "@/environments/environment";
+import axios from "axios";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  readonly token = signal<string | null>(null);
-  readonly authUser = signal<any | null>(null);
+  private readonly _token = new BehaviorSubject<string | null>(null);
 
-  constructor(private httpClient: HttpClient) {}
+  constructor() {}
 
-  loginDummy({ username, password }: { username: string; password: string }) {
-    this.authUser.set({ username });
-    localStorage.setItem("user", JSON.stringify({ username }));
+  get token() {
+    return this._token.getValue();
   }
 
-  login(loginPayload: { username: string; pin: string }) {
-    return this.httpClient.post(
+  getToken() {
+    return this._token.asObservable();
+  }
+
+  setToken(token: string | null) {
+    this._token.next(token);
+  }
+
+  async login(loginPayload: { username: string; pin: string }) {
+    return await axios.post<string>(
       environment.apiUrl + "/auth/login",
       loginPayload,
       {
-        responseType: "text",
+        headers: {
+          Accept: "text/plain",
+          "ngrok-skip-browser-warning": "true",
+        },
       }
     );
   }
 
   logout() {
     try {
-      this.authUser.set(null);
+      this.setToken(null);
       localStorage.removeItem("token");
 
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   }
