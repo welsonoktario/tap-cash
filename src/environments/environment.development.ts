@@ -1,4 +1,4 @@
-const baseUrl = "https://a190-36-78-10-144.ngrok-free.app" as const;
+const baseUrl = "https://adapted-wolf-sensible.ngrok-free.app" as const;
 
 export const environment = {
   production: false,

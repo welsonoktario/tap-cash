@@ -85,9 +85,13 @@ export class LoginComponent {
           });
         })
         .catch((err) => {
-          console.error(err);
           this.isError = true;
-          this.errorMessage = err.message;
+
+          if (err.response?.status === 401) {
+            this.errorMessage = "Username atau PIN salah";
+          } else {
+            this.errorMessage = "Terjadi kesalahan, silahkan coba lagi nanti";
+          }
         })
         .finally(() => {
           this.isLoading = false;

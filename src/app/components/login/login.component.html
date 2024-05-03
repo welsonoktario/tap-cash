@@ -56,6 +56,9 @@
 
       <div class="space-y-10">
         <div>
+          <p *ngIf="errorMessage" class="mb-2 text-lg font-medium text-primary italic">
+            {{ errorMessage }}
+          </p>
           <input
             formControlName="username"
             class="w-full"

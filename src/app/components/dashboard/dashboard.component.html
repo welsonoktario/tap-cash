@@ -16,14 +16,15 @@
       <ng-template #accountTemplate>
         <ng-container *ngIf="!cardList; else mainContent">
           <div
-            class="mt-8 flex h-96 flex-col items-center justify-center rounded-lg bg-primary/10 p-8"
+            class="mt-8 flex h-full flex-col items-center justify-center rounded-lg p-8"
           >
-            <h1 class="text-center text-2xl font-bold uppercase">
-              TapCash Belum Aktif
+            <img src="/assets/img/tapcash-inactive.png" />
+            <h1 class="text-center text-4xl font-semibold">
+              Virtual TapCash Belum Aktif
             </h1>
             <div class="mt-6">
-              <p class="text-center">
-                Hubungkan akun TapCash di aplikasi BNI Mobile Banking anda untuk
+              <p class="text-center text-lg font-light">
+                Hubungkan akun TapCash di aplikasi BNI Mobile Banking Anda untuk
                 mengakses halaman ini.
               </p>
             </div>
@@ -153,9 +154,13 @@
             </div>
           </div>
 
-          <transaction-list *ngIf="cardList" [cardId]="cardList!.cardId"></transaction-list>
+          <transaction-list
+            *ngIf="cardList"
+            [cardId]="cardList!.cardId"
+          ></transaction-list>
         </ng-template>
       </ng-template>
     </ng-template>
   </div>
+  <app-footer2></app-footer2>
 </div>
