@@ -8,9 +8,9 @@
       />
     </div>
 
-    <div *ngIf="account?.customerName" class="flex items-center gap-x-4">
+    <div *ngIf="account" class="flex items-center gap-x-4">
       <div class="flex h-full items-center border-r-2 pr-4">
-        {{ account?.customerName }}
+        {{ account.customerName }}
       </div>
       <button
         (click)="logout()"

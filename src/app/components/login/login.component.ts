@@ -1,4 +1,3 @@
-import { HeaderComponent } from "@/app/components/header/header.component";
 import { FooterComponent } from "@/app/components/footer/footer.component";
 import { AuthService } from "@/app/services/auth.service";
 import { informationLinks, socialLinks, supportLinks } from "@/utils/constants";
@@ -10,12 +9,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "login",
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    HeaderComponent,
-    FooterComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, FooterComponent],
   templateUrl: "./login.component.html",
 })
 export class LoginComponent {
@@ -84,23 +78,24 @@ export class LoginComponent {
           username: this.loginForm.value.username!,
           pin: this.loginForm.value.pin!,
         })
-        .subscribe({
-          next: (res) => {
-            localStorage.setItem("token", res);
-            this.router.navigate(["/"], {
-              replaceUrl: true,
-            });
-          },
-          error: (err) => {
-            console.error(err);
-            this.isError = true;
-            this.errorMessage = err.message;
-          },
-        });
+        .then((res) => {
+          localStorage.setItem("token", res.data);
+          this.router.navigate(["/"], {
+            replaceUrl: true,
+          });
+        })
+        .catch((err) => {
+          this.isError = true;
 
-      this.router.navigate(["/"], {
-        replaceUrl: true,
-      });
+          if (err.response?.status === 401) {
+            this.errorMessage = "Username atau PIN salah";
+          } else {
+            this.errorMessage = "Terjadi kesalahan, silahkan coba lagi nanti";
+          }
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
   }
 }

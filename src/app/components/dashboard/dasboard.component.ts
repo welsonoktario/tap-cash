@@ -1,9 +1,10 @@
 import { CardComponent } from "@/app/components/card/card.component";
 import { Footer2Component } from "@/app/components/footer2/footer2.component";
 import { HeaderComponent } from "@/app/components/header/header.component";
-import { TableTransactionComponent } from "@/app/components/table-transaction/table-transaction.component";
+import { TransactionListComponent } from "@/app/components/transaction-list/transaction-list.component";
 import { AccountService } from "@/app/services/account.service";
 import { AuthService } from "@/app/services/auth.service";
+import { Account, CardData } from "@/types";
 import { CommonModule, formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
@@ -15,14 +16,14 @@ import { Router } from "@angular/router";
   imports: [
     CommonModule,
     CardComponent,
-    TableTransactionComponent,
+    TransactionListComponent,
     HeaderComponent,
     Footer2Component,
   ],
 })
 export class DashboardComponent implements OnInit {
-  authUser = this.authService.authUser();
-  account = this.accountService.account();
+  token: string | null = localStorage.getItem("token");
+  account: Account | null = null;
   currentDate = new Date();
   dateTimeNow = formatDate(this.currentDate, "d MMM y", "en");
   currentYear = this.currentDate.getFullYear();
@@ -35,68 +36,7 @@ export class DashboardComponent implements OnInit {
   isTapcashBalanceVisible = false;
   isDebitBalanceVisible = false;
 
-  transactions = [
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Keluar",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Keluar",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Keluar",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Keluar",
-      amount: 100000,
-    },
-    {
-      date: new Date(),
-      type: "Masuk",
-      amount: 100000,
-    },
-  ];
+  cardList: CardData | undefined = undefined;
 
   constructor(
     private router: Router,
@@ -104,31 +44,49 @@ export class DashboardComponent implements OnInit {
     private accountService: AccountService
   ) {}
 
-  ngOnInit() {
-    this.accountService.getUserData(this.authService.token()!).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.accountService.account.set(data);
-      },
-      error: (err) => {
-        this.isError = true;
-        this.errorMessage = err.message;
-        this.isLoading = false;
-        console.error(err);
-      },
-      complete: () => {
-        this.isLoading = false;
-      },
-    });
-  }
-
-  async handleLogout() {
-    if (!this.authService.logout()) {
-      console.error("Logout failed");
+  async ngOnInit() {
+    if (!this.token) {
+      this.authService.getToken().subscribe((data) => {
+        this.token = data;
+      });
     }
 
-    this.router.navigate(["/login"], {
-      replaceUrl: true,
+    this.accountService.getAcount().subscribe((data) => {
+      this.account = data;
     });
+
+    this.loadUser();
+  }
+
+  async loadUser() {
+    this.isLoading = true;
+
+    try {
+      const userDataRes = await this.accountService.getUserData(this.token!);
+      this.accountService.setAccount(userDataRes.data);
+
+      const cardsDataRes = await this.accountService.getCardsData(
+        this.account!.virtualTapCashId!,
+        this.token!
+      );
+      this.cardList =
+        cardsDataRes.data.length > 0 ? cardsDataRes.data[0] : undefined;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        this.authService.logout();
+
+        this.accountService.setAccount(null);
+        this.router.navigate(["/login"], {
+          replaceUrl: true,
+        });
+
+        return;
+      }
+
+      this.isError = true;
+      this.errorMessage = error.messsage;
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

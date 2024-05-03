@@ -1,7 +1,8 @@
 import { AccountService } from "@/app/services/account.service";
 import { AuthService } from "@/app/services/auth.service";
+import { Account } from "@/types";
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
@@ -10,9 +11,9 @@ import { Router } from "@angular/router";
   templateUrl: "./header.component.html",
   imports: [CommonModule],
 })
-export class HeaderComponent {
-  authUser = this.authService.authUser();
-  account = this.accountService.account();
+export class HeaderComponent implements OnInit {
+  authUser: any | null = null;
+  account: Account | null = null;
 
   constructor(
     private router: Router,
@@ -20,11 +21,20 @@ export class HeaderComponent {
     private accountService: AccountService
   ) {}
 
+  ngOnInit(): void {
+    this.accountService.getAcount().subscribe((data) => {
+      this.account = data;
+    });
+  }
+
   logout() {
-    if (this.authService.logout()) {
-      this.router.navigate(["/login"], {
-        replaceUrl: true,
-      });
+    if (!this.authService.logout()) {
+      console.error("Logout failed");
     }
+
+    this.accountService.setAccount(null);
+    this.router.navigate(["/login"], {
+      replaceUrl: true,
+    });
   }
 }

@@ -1,30 +1,82 @@
-<table class="table w-full table-auto">
-  <thead>
-    <tr class="bg-secondary/10 text-center font-bold text-black">
+<table class="relative table w-full table-auto">
+  <thead class="sticky top-0">
+    <tr class="bg-[#ccd7d9] text-center font-bold text-black">
       <th class="rounded-l-md py-2 pl-12 pr-4 text-left">Waktu Transaksi</th>
       <th class="px-4 py-2 text-center">Jenis Transaksi</th>
       <th class="rounded-r-md py-2 pl-4 pr-12 text-right">Nominal Transaksi</th>
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let transaction of transactions">
+    <ng-container *ngFor="let transaction of filteredTransactions[page - 1]">
       <tr class="border-b last:border-none">
         <td class="py-2 pl-12 pr-4 text-left">
-          {{ transaction.date | date: "hh:mm d/MM/y" : "id" }}
+          {{ transaction.createdAt | date: "hh:mm d/MM/y" : "id" }}
         </td>
-        <td class="px-4 py-2 text-center">{{ transaction.type }}</td>
+        <td class="px-4 py-2 text-center">
+          {{ transactionTypeMap[transaction.type] }}
+        </td>
         <td class="py-2 pl-4 pr-12 text-right">
           <span
             [ngClass]="{
-              'text-secondary': transaction.type === 'Masuk',
-              'text-primary': transaction.type === 'Keluar'
+              'text-secondary': transaction.type === 'TOPUP',
+              'text-primary': transaction.type !== 'TOPUP'
             }"
           >
-            {{ transaction.type === "Masuk" ? "+" : "-" }}
-            {{ transaction.amount | currency: "IDR" : "symbol" : "1.0-0" }}
+            {{ transaction.type !== "TOPUP" ? "-" : "+" }}
+            {{ transaction.nominal | currency: "IDR" : "symbol" : "1.0-0" }}
           </span>
         </td>
       </tr>
     </ng-container>
   </tbody>
+  <tfoot>
+    <tr class="bg-[#ccd7d9]">
+      <td class="py-2 pr-12" colspan="3">
+        <div class="flex items-center justify-end gap-x-1">
+          <button
+            class="rounded-lg border border-transparent px-3 pb-1 pt-1.5 leading-none transition-all hover:border-primary hover:bg-primary/40 disabled:text-secondary/40 hover:disabled:border-0 disabled:hover:bg-transparent"
+            (click)="page = 1"
+            [disabled]="page === 1"
+          >
+            &laquo;
+          </button>
+          <button
+            class="rounded-lg border border-transparent px-3 pb-1 pt-1.5 leading-none transition-all hover:border-primary hover:bg-primary/40 disabled:text-secondary/40 hover:disabled:border-0 disabled:hover:bg-transparent"
+            (click)="page = page - 1"
+            [disabled]="page === 1"
+          >
+            &lsaquo;
+          </button>
+          <ng-container
+            *ngFor="let item of [].constructor(pageCount); let i = index"
+          >
+            <button
+              class="aspect-square rounded-lg border border-transparent px-3 pb-1 pt-2.5 leading-none transition-all"
+              [ngClass]="{
+                'bg-primary text-primary-foreground': page === i + 1,
+                'hover:border-primary hover:bg-primary/40': page !== i + 1
+              }"
+              (click)="page = i + 1"
+            >
+              {{ i + 1 }}
+            </button>
+          </ng-container>
+          <button
+            class="rounded-lg border border-transparent px-3 pb-1 pt-1.5 leading-none transition-all hover:border-primary hover:bg-primary/40 disabled:text-secondary/40 hover:disabled:border-0 disabled:hover:bg-transparent"
+            (click)="page = page + 1"
+            [disabled]="page === pageCount"
+          >
+            &rsaquo;
+          </button>
+          <button
+            class="rounded-lg border border-transparent px-3 pb-1 pt-1.5 leading-none transition-all hover:border-primary hover:bg-primary/40 disabled:text-secondary/40 hover:disabled:border-0 disabled:hover:bg-transparent"
+            (click)="page = pageCount"
+            [disabled]="page === pageCount"
+          >
+            &raquo;
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tfoot>
 </table>
